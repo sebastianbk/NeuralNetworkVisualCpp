@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 
 	if (argc < 6)
 	{
-		cout << "NNVC++ requires a minimum 6 command-line arguments:" << endl;
+		cout << "NNVC++ requires a minimum of 6 command-line arguments:" << endl;
 		cout << "  pathToInputValuesFile" << endl;
 		cout << "  pathToTargetValuesFile" << endl;
 		cout << "  activationFunction (sig or tanh)" << endl;
