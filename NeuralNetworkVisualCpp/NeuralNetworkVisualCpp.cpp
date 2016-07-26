@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 
 	if (argc < 6)
 	{
-		cout << "NNVC++ requires minium 6 command-line arguments:" << endl;
+		cout << "NNVC++ requires a minimum 6 command-line arguments:" << endl;
 		cout << "  pathToInputValuesFile" << endl;
 		cout << "  pathToTargetValuesFile" << endl;
 		cout << "  activationFunction (sig or tanh)" << endl;
@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
 			cout << " " << x;
 		}
 	}
-	cout << endl;
+	cout << endl << endl;
 	Net neuralNet(topology);
 
 	vector<vector<double>> input, target;
@@ -84,7 +84,7 @@ int main(int argc, char* argv[])
 	{
 		for (unsigned i = 0; i < input.size(); i++)
 		{
-			cout << endl << "Pass #" << i << endl;
+			cout << endl << "Pass " << i << endl;
 
 			vector<double>& inputVals = input[i];
 			vector<double>& targetVals = target[i];

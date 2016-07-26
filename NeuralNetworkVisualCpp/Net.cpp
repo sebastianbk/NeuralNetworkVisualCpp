@@ -15,13 +15,14 @@ Net::Net(const vector<unsigned>& topology)
 	{
 		m_layers.push_back(Layer());
 
+		//unsigned numNeurons = layerNum == topology.size() - 1 ? topology[layerNum] : topology[layerNum] + 1;
 		unsigned numOutputs = layerNum == topology.size() - 1 ? 0 : topology[layerNum + 1];
 
 		for (unsigned neuronNum = 0; neuronNum < topology[layerNum] + 1; neuronNum++)
 		{
 			m_layers.back().push_back(Neuron(numOutputs, neuronNum));
 
-			cout << "Created a neuron #" << neuronNum << " on layer #" << layerNum << endl;
+			cout << "Created neuron " << neuronNum << " on layer " << layerNum << endl;
 		}
 
 		m_layers.back().back().setOutputVal(1.0);

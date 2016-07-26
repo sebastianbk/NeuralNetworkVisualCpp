@@ -18,7 +18,7 @@ Neuron::Neuron(unsigned numOutputs, unsigned myIndex)
 
 void Neuron::feedForward(const Layer& prevLayer)
 {
-	double sum = 0;
+	double sum = 0.0;
 
 	for (unsigned n = 0; n < prevLayer.size(); n++)
 	{
@@ -33,16 +33,16 @@ void Neuron::setOutputVal(double outputVal)
 	m_outputVal = outputVal;
 }
 
-void Neuron::calcOutputGradients(double targetVal)
-{
-	double delta = targetVal - m_outputVal;
-	m_gradient = delta * (*Functions::activationFunctionDerivative)(m_outputVal);
-}
-
 void Neuron::calcHiddenGradients(const Layer& nextLayer)
 {
 	double dow = sumDOW(nextLayer);
 	m_gradient = dow * (*Functions::activationFunctionDerivative)(m_outputVal);
+}
+
+void Neuron::calcOutputGradients(double targetVal)
+{
+	double delta = targetVal - m_outputVal;
+	m_gradient = delta * (*Functions::activationFunctionDerivative)(m_outputVal);
 }
 
 void Neuron::updateInputWeights(Layer & prevLayer)
@@ -62,7 +62,7 @@ void Neuron::updateInputWeights(Layer & prevLayer)
 
 double Neuron::sumDOW(const Layer & nextLayer) const
 {
-	double sum = 0;
+	double sum = 0.0;
 
 	for (unsigned n = 0; n < nextLayer.size() - 1; n++)
 	{
