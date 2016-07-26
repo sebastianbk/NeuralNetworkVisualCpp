@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Constants.h"
 #include "Neuron.h"
 #include <cmath>
 
@@ -13,13 +14,6 @@ Neuron::Neuron(unsigned numOutputs, unsigned myIndex)
 		m_outputWeights.back().weight = Neuron::randomWeight();
 	}
 }
-
-Neuron::~Neuron()
-{
-}
-
-double Neuron::eta = 0.15; // overall learning rate
-double Neuron::alpha = 0.5; // momentum
 
 double Neuron::transferFunction(double x)
 {
@@ -68,7 +62,7 @@ void Neuron::updateInputWeights(Layer & prevLayer)
 
 		double oldDeltaWeight = neuron.m_outputWeights[m_myIndex].deltaWeight;
 
-		double newDeltaWeight = eta * neuron.getOutputVal() * m_gradient + alpha * oldDeltaWeight;
+		double newDeltaWeight = Constants::eta * neuron.getOutputVal() * m_gradient + Constants::alpha * oldDeltaWeight;
 
 		neuron.m_outputWeights[m_myIndex].deltaWeight = newDeltaWeight;
 		neuron.m_outputWeights[m_myIndex].weight += newDeltaWeight;

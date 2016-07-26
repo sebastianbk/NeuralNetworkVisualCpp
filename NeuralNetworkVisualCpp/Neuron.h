@@ -15,12 +15,9 @@ private:
 	static double randomWeight(void) { return rand() / double(RAND_MAX); }
 	static double transferFunction(double x);
 	static double transferFunctionDerivative(double x);
-	static double eta;
-	static double alpha;
 
 public:
 	Neuron(unsigned numOutputs, unsigned myIndex);
-	virtual ~Neuron();
 	void feedForward(const Layer& prevLayer);
 	double getOutputVal() const { return m_outputVal; };
 	void setOutputVal(double outputVal);

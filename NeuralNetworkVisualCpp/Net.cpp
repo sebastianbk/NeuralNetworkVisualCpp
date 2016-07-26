@@ -23,11 +23,9 @@ Net::Net(const vector<unsigned>& topology)
 
 			cout << "Created a neuron #" << neuronNum << " on layer #" << layerNum << endl;
 		}
-	}
-}
 
-Net::~Net()
-{
+		m_layers.back().back().setOutputVal(1.0);
+	}
 }
 
 void Net::feedForward(const std::vector<double>& inputVals)
@@ -88,7 +86,7 @@ void Net::backProp(const std::vector<double>& targetVals)
 		Layer& thisLayer = m_layers[layerNum];
 		Layer& prevLayer = m_layers[layerNum - 1];
 
-		for (unsigned n = 0; n < thisLayer.size(); n++)
+		for (unsigned n = 0; n < thisLayer.size() - 1; n++)
 		{
 			thisLayer[n].updateInputWeights(prevLayer);
 		}
