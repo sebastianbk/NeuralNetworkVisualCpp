@@ -45,7 +45,7 @@ void Neuron::calcOutputGradients(double targetVal)
 	m_gradient = delta * (*Functions::activationFunctionDerivative)(m_outputVal);
 }
 
-void Neuron::updateInputWeights(Layer & prevLayer)
+void Neuron::updateInputWeights(Layer& prevLayer)
 {
 	for (unsigned n = 0; n < prevLayer.size(); n++)
 	{
@@ -60,7 +60,7 @@ void Neuron::updateInputWeights(Layer & prevLayer)
 	}
 }
 
-double Neuron::sumDOW(const Layer & nextLayer) const
+double Neuron::sumDOW(const Layer& nextLayer) const
 {
 	double sum = 0.0;
 

@@ -2,6 +2,6 @@
 
 namespace Constants
 {
-	const double eta = 0.2;
-	const double alpha = 0.3;
+	const double eta = 0.05;
+	const double alpha = 0.01;
 }

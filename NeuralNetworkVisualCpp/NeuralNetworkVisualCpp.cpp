@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
 
 	string inputValuesFile = argv[1];
 	string targetValuesFile = argv[2];
-	TrainingData trainingData(inputValuesFile, targetValuesFile);
+	TrainingData* trainingData = new TrainingData(inputValuesFile, targetValuesFile);
 
 	if (argv[3] == "sig")
 	{
@@ -63,12 +63,12 @@ int main(int argc, char* argv[])
 	vector<vector<double>> input, target;
 	vector<vector<double>> input_n, target_n;
 
-	while (!trainingData.isEof())
+	while (!(*trainingData).isEof())
 	{
 		vector<double> inputVals, targetVals;
 
-		auto numInputVals = trainingData.retrieveInputVals(inputVals);
-		auto numTargetVals = trainingData.retrieveTargetVals(targetVals);
+		auto numInputVals = (*trainingData).retrieveInputVals(inputVals);
+		auto numTargetVals = (*trainingData).retrieveTargetVals(targetVals);
 
 		if (numInputVals != topology[0] || numTargetVals != topology.back())
 			continue;
@@ -76,6 +76,8 @@ int main(int argc, char* argv[])
 		input.push_back(inputVals);
 		target.push_back(targetVals);
 	}
+
+	delete trainingData;
 
 	input_n = Functions::normalizeVals(input);
 	target_n = Functions::normalizeVals(target);

@@ -14,7 +14,7 @@ namespace Functions
 	vector<vector<double>> transpose(const vector<vector<double>>& values);
 
 	static double hyperbolicTangentFunction(double& value) { return tanh(value); };
-	static double hyperbolicTangentFunctionDerivative(double& value) { return 1.0 - value * value; };
+	static double hyperbolicTangentFunctionDerivative(double& value) { return (1.0 - value) * (1.0 + value); };
 	static double sigmoidFunction(double& value) { return 1.0 / (1.0 + exp(-1.0 * value)); };
 	static double sigmoidFunctionDerivative(double& value) { return exp(value) / ((1 + exp(value)) * (1 + exp(value))); };
 
