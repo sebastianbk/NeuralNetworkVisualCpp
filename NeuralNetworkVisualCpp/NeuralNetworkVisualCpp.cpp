@@ -24,9 +24,10 @@ int main(int argc, char* argv[])
 
 	if (argc < 6)
 	{
-		cout << "NNVC++ requires minium 5 command-line arguments:" << endl;
+		cout << "NNVC++ requires minium 6 command-line arguments:" << endl;
 		cout << "  pathToInputValuesFile" << endl;
 		cout << "  pathToTargetValuesFile" << endl;
+		cout << "  activationFunction (sig or tanh)" << endl;
 		cout << "  numInputNeurons" << endl;
 		cout << "  numHiddenNeurons (in case of a one-layer network)" << endl;
 		cout << "  numOutputNeurons";
@@ -38,9 +39,15 @@ int main(int argc, char* argv[])
 	string targetValuesFile = argv[2];
 	TrainingData trainingData(inputValuesFile, targetValuesFile);
 
+	if (argv[3] == "sig")
+	{
+		Functions::activationFunction = &Functions::sigmoidFunction;
+		Functions::activationFunctionDerivative = &Functions::sigmoidFunctionDerivative;
+	}
+
 	vector<unsigned> topology;
 	cout << "Topology:";
-	for (int i = 3; i < argc; i++)
+	for (int i = 4; i < argc; i++)
 	{
 		istringstream ss(argv[i]);
 		unsigned x;
@@ -53,42 +60,75 @@ int main(int argc, char* argv[])
 	cout << endl;
 	Net neuralNet(topology);
 
-	vector<double> inputVals, targetVals, resultVals;
-	int trainingPass = 0;
+	vector<vector<double>> input, target;
+	vector<vector<double>> input_n, target_n;
 
 	while (!trainingData.isEof())
 	{
-		++trainingPass;
-		cout << endl << "Pass #" << trainingPass << endl;
+		vector<double> inputVals, targetVals;
 
 		auto numInputVals = trainingData.retrieveInputVals(inputVals);
 		auto numTargetVals = trainingData.retrieveTargetVals(targetVals);
+
 		if (numInputVals != topology[0] || numTargetVals != topology.back())
 			continue;
 
-		neuralNet.feedForward(inputVals);
-		cout << "Inputs: ";
-		Functions::showVectorVals(inputVals);
-		cout << endl;
-
-		neuralNet.getResults(resultVals);
-		cout << "Outputs: ";
-		Functions::showVectorVals(resultVals);
-		cout << endl;
-
-		cout << "Targets: ";
-		Functions::showVectorVals(targetVals);
-		cout << endl;
-
-		assert(targetVals.size() == topology.back());
-
-		neuralNet.backProp(targetVals);
-
-		cout << "Net recent average error: "
-			<< neuralNet.getRecentAverageError() << endl;
+		input.push_back(inputVals);
+		target.push_back(targetVals);
 	}
 
-	cout << endl << "Done!" << endl;
+	input_n = Functions::normalizeVals(input);
+	target_n = Functions::normalizeVals(target);
+
+	if (input.size() == target.size())
+	{
+		for (unsigned i = 0; i < input.size(); i++)
+		{
+			cout << endl << "Pass #" << i << endl;
+
+			vector<double>& inputVals = input[i];
+			vector<double>& targetVals = target[i];
+			vector<double>& inputVals_n = input_n[i];
+			vector<double>& targetVals_n = target_n[i];
+			vector<double> resultVals;
+
+			neuralNet.feedForward(inputVals_n);
+			neuralNet.getResults(resultVals);
+
+			cout << "in=\t";
+			Functions::showVectorVals(inputVals);
+			cout << endl;
+
+			cout << "in_n=\t";
+			Functions::showVectorVals(inputVals_n);
+			cout << endl;
+
+			cout << "out=\t";
+			Functions::showVectorVals(resultVals);
+			cout << endl;
+
+			cout << "tar=\t";
+			Functions::showVectorVals(targetVals);
+			cout << endl;
+
+			cout << "tar_n=\t";
+			Functions::showVectorVals(targetVals_n);
+			cout << endl;
+
+			assert(targetVals.size() == topology.back());
+
+			neuralNet.backProp(targetVals_n);
+
+			cout << "RMS deviation: " << neuralNet.getRmsDeviation() << endl;
+			cout << "Net recent average error: " << neuralNet.getRecentAverageError() << endl;
+		}
+
+		cout << endl << "Done!" << endl;
+	}
+	else
+	{
+		cout << "Input file and target output file aren't of the same size." << endl;
+	}
 
     return 0;
 }

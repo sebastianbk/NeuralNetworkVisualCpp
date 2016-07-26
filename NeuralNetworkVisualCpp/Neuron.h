@@ -13,8 +13,6 @@ private:
 	double m_gradient;
 	std::vector<Connection> m_outputWeights;
 	static double randomWeight(void) { return rand() / double(RAND_MAX); }
-	static double transferFunction(double x);
-	static double transferFunctionDerivative(double x);
 
 public:
 	Neuron(unsigned numOutputs, unsigned myIndex);
@@ -25,5 +23,4 @@ public:
 	void calcHiddenGradients(const Layer& nextLayer);
 	void updateInputWeights(Layer& prevLayer);
 	double sumDOW(const Layer& nextLayer) const;
-
 };

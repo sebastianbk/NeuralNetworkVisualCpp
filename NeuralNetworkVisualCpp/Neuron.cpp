@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Constants.h"
+#include "Functions.h"
 #include "Neuron.h"
 #include <cmath>
 
@@ -15,16 +16,6 @@ Neuron::Neuron(unsigned numOutputs, unsigned myIndex)
 	}
 }
 
-double Neuron::transferFunction(double x)
-{
-	return tanh(x);
-}
-
-double Neuron::transferFunctionDerivative(double x)
-{
-	return 1 - x * x;
-}
-
 void Neuron::feedForward(const Layer& prevLayer)
 {
 	double sum = 0;
@@ -34,7 +25,7 @@ void Neuron::feedForward(const Layer& prevLayer)
 		sum += prevLayer[n].getOutputVal() * prevLayer[n].m_outputWeights[m_myIndex].weight;
 	}
 
-	m_outputVal = transferFunction(sum);
+	m_outputVal = (*Functions::activationFunction)(sum);
 }
 
 void Neuron::setOutputVal(double outputVal)
@@ -45,13 +36,13 @@ void Neuron::setOutputVal(double outputVal)
 void Neuron::calcOutputGradients(double targetVal)
 {
 	double delta = targetVal - m_outputVal;
-	m_gradient = delta * transferFunctionDerivative(m_outputVal);
+	m_gradient = delta * (*Functions::activationFunctionDerivative)(m_outputVal);
 }
 
 void Neuron::calcHiddenGradients(const Layer& nextLayer)
 {
 	double dow = sumDOW(nextLayer);
-	m_gradient = dow * transferFunctionDerivative(m_outputVal);
+	m_gradient = dow * (*Functions::activationFunctionDerivative)(m_outputVal);
 }
 
 void Neuron::updateInputWeights(Layer & prevLayer)

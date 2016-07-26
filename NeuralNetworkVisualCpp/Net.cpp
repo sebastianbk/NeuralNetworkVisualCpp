@@ -17,7 +17,7 @@ Net::Net(const vector<unsigned>& topology)
 
 		unsigned numOutputs = layerNum == topology.size() - 1 ? 0 : topology[layerNum + 1];
 
-		for (unsigned neuronNum = 0; neuronNum <= topology[layerNum]; neuronNum++)
+		for (unsigned neuronNum = 0; neuronNum < topology[layerNum] + 1; neuronNum++)
 		{
 			m_layers.back().push_back(Neuron(numOutputs, neuronNum));
 
@@ -52,18 +52,18 @@ void Net::backProp(const std::vector<double>& targetVals)
 {
 	Layer& outputLayer = m_layers.back();
 
-	m_error = 0;
+	m_error = 0.0;
 
 	for (unsigned n = 0; n < outputLayer.size() - 1; n++)
 	{
 		double delta = targetVals[n] - outputLayer[n].getOutputVal();
-		m_error = delta * delta;
+		m_error += delta * delta;
 	}
 
-	m_error /= outputLayer.size() - 1;
+	m_error /= outputLayer.size() - 1.0;
 	m_error = sqrt(m_error);
 
-	m_recentAverageError = (m_recentAverageError * m_recentAverageSmoothingFactor + m_error) / (m_recentAverageSmoothingFactor + 1);
+	m_recentAverageError = (m_recentAverageError * m_recentAverageSmoothingFactor + m_error) / (m_recentAverageSmoothingFactor + 1.0);
 
 	for (unsigned n = 0; n < outputLayer.size() - 1; n++)
 	{
