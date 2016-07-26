@@ -4,9 +4,10 @@
 #include "Neuron.h"
 #include <cmath>
 
-Neuron::Neuron(unsigned numOutputs, unsigned myIndex)
+Neuron::Neuron(unsigned numOutputs, unsigned myIndex, bool isOutputNeuron)
 {
 	m_myIndex = myIndex;
+	m_isOutputNeuron = isOutputNeuron;
 
 	for (unsigned c = 0; c < numOutputs; c++)
 	{
@@ -24,6 +25,9 @@ void Neuron::feedForward(const Layer& prevLayer)
 	{
 		sum += prevLayer[n].getOutputVal() * prevLayer[n].m_outputWeights[m_myIndex].weight;
 	}
+
+	//if (m_isOutputNeuron && m_myIndex == 0)
+	//	__debugbreak();
 
 	m_outputVal = (*Functions::activationFunction)(sum);
 }
