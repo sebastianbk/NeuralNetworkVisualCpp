@@ -62,8 +62,9 @@ int main(int argc, char* argv[])
 		cout << endl << "Pass #" << trainingPass << endl;
 
 		auto numInputVals = trainingData.retrieveInputVals(inputVals);
-		if (numInputVals != topology[0])
-			break;
+		auto numTargetVals = trainingData.retrieveTargetVals(targetVals);
+		if (numInputVals != topology[0] || numTargetVals != topology.back())
+			continue;
 
 		neuralNet.feedForward(inputVals);
 		cout << "Inputs: ";
@@ -75,7 +76,6 @@ int main(int argc, char* argv[])
 		Functions::showVectorVals(resultVals);
 		cout << endl;
 
-		auto numTargetVals = trainingData.retrieveTargetVals(targetVals);
 		cout << "Targets: ";
 		Functions::showVectorVals(targetVals);
 		cout << endl;
